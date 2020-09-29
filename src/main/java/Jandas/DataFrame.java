@@ -3,6 +3,9 @@ package Jandas;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.*;
 
 
@@ -117,7 +120,7 @@ public class DataFrame{
         this.index = new Index(index);
     }
 
-    // utility method
+    // output methods
     public void printData(){
         Map <String, List> tempMap = new HashMap<>();
         for (Map.Entry<String, Columns> item : this.data.entrySet()){
@@ -125,6 +128,33 @@ public class DataFrame{
         }
         System.out.println(tempMap);
     }
+
+    public void toCsv(String path){
+        String csv = "SEP=,\n";
+        for (int i=-1; i<this._size; i++) {
+            for (Map.Entry<String, Columns> item : this.data.entrySet()){
+                if (i == -1){
+                    csv += item.getKey() + ", ";
+                }
+                else{
+                    csv += item.getValue().get_values().get(i) + ", ";
+                }
+            }
+            csv = csv.substring(0,csv.length()-2);
+            csv += "\n";
+        }
+
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(new File(path));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        pw.write(csv);
+        pw.close();
+    }
+
+
 
 //    /*
 //    override method inside constructor
