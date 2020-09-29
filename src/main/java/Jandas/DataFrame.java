@@ -78,6 +78,15 @@ public class DataFrame{
         }
     }
 
+    public void append(DataFrame df2){
+        for (Map.Entry<String, Columns> col2_i : df2.getData().entrySet()){
+            if (this.getData().containsKey(col2_i.getKey())){
+                this.getData().get(col2_i.getKey()).append(df2.getData().get(col2_i.getKey()));
+            }
+        }
+        build();
+    }
+
     // override using list of lists
     public void addColumn(Collection col){
         addColumn(new Columns(col));
@@ -152,6 +161,12 @@ public class DataFrame{
         }
         pw.write(csv);
         pw.close();
+    }
+
+    // BUILD
+    private void build() {
+        calculateSize();
+        makeIndex();
     }
 
 
