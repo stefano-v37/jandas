@@ -3,10 +3,7 @@ package Jandas;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -14,12 +11,22 @@ public class Columns {
 
     private String _name;
     private List _values;
-    private Object _type;
+    static Object _type;
     private Map<String, Object> _map = new HashMap<>();
 
+    //constructor #0: only create the instance
+    public Columns(){
+        List voidList = new ArrayList();
+        setValues(voidList);
+        setType();
+        setName();
+
+        build();
+    }
+
     // constructor #1: fast, provide only data and retrieve the rest
-    public <T> Columns(List<T> values){
-        setValues(values);
+    public <T> Columns(Collection<T> values){
+        setValues((List)values);
         setType();
         setName();
 
@@ -38,6 +45,15 @@ public class Columns {
 
     public <T> Columns(T type, String name){
         List<T> values = new ArrayList<T>();
+        setValues(values);
+        setType(type);
+        setName(name);
+
+        build();
+    }
+
+    // constructor #3: full
+    public <T> Columns(List values, T type, String name){
         setValues(values);
         setType(type);
         setName(name);
@@ -87,7 +103,11 @@ public class Columns {
 
     // Make a Map for DataFrame
     public void build(){
-        this._map.put("values", this._values);
+        build("values", this._values);
+    }
+
+    public void build(String dataName, Object values){
+        this._map.put(dataName, values);
         this._map.put("type", this._type);
     }
 }
