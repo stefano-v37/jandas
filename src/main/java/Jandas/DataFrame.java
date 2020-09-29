@@ -51,12 +51,21 @@ public class DataFrame{
 
 
     // structure methods
+    // TODO: understand how to compare Map<:,diff type>
+    public void addDf(Map<String, Columns> col){
+        this.data.putAll(col);
+    }
+
     public void addColumns(Map cols){
-        // TODO: why do I have to create a identical object as that passed in kwargs?
-        Map <String, ArrayList> currentMap = cols;
         Map <String, Columns> tempMap = new HashMap<>();
-        for (Map.Entry<String, ArrayList> item : currentMap.entrySet()) {
-            tempMap.put(item.getKey(), new Columns(item.getValue()));
+        if (cols.get(cols.keySet().toArray()[0]).getClass() == Jandas.Columns.class){
+            tempMap = cols;
+        }
+        else{
+            Map<String, ArrayList> currentMap = cols;
+            for (Map.Entry<String, ArrayList> item : currentMap.entrySet()) {
+                tempMap.put(item.getKey(), new Columns(item.getValue()));
+            }
         }
         this.data.putAll(tempMap);
     }
@@ -76,6 +85,11 @@ public class DataFrame{
         for (Columns col:cols){
             addColumn(col);
         }
+    }
+
+    public void append(Map map2){
+        DataFrame df2 = new DataFrame(map2);
+        this.append(df2);
     }
 
     public void append(DataFrame df2){
