@@ -6,7 +6,7 @@
 
     <groupId>com.stefano-v37</groupId>
     <artifactId>jandas</artifactId>
-    <version>0.0.0</version>
+    <version>0.0.1-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>

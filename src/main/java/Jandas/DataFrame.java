@@ -40,9 +40,24 @@ public class DataFrame{
     }
 
     // constructor 5: map of names : lists
+    public DataFrame(Map cols){
+        addColumns(cols);
+        calculateSize();
+        makeIndex();
+    }
 
 
     // structure methods
+    public void addColumns(Map cols){
+        // TODO: why do I have to create a identical object as that passed in kwargs?
+        Map <String, ArrayList> currentMap = cols;
+        Map <String, Columns> tempMap = new HashMap<>();
+        for (Map.Entry<String, ArrayList> item : currentMap.entrySet()) {
+            tempMap.put(item.getKey(), new Columns(item.getValue()));
+        }
+        this.data.putAll(tempMap);
+    }
+
     public void addColumn(Columns col){
         String temp_name;
         if (col.get_name() != "Column") {
@@ -103,7 +118,7 @@ public class DataFrame{
     }
 
     // utility method
-    public void print(){
+    public void printData(){
         Map <String, List> tempMap = new HashMap<>();
         for (Map.Entry<String, Columns> item : this.data.entrySet()){
             tempMap.put(item.getKey(), item.getValue().get_values());
