@@ -1,5 +1,6 @@
 package Jandas;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,17 +27,30 @@ public class Utilities {
         return rule;
     }
 
-    public static List<Boolean> isEqual(Columns column, Object value){
+    public static List<Boolean> isEqual(Columns column, Object value) {
         List<Boolean> rule = new ArrayList<Boolean>();
-        for (int i = 0; i < column.get_values().size(); i++){
-            if (column.get_values().get(i) == value){
-                rule.add(true);
-            }
-            else{
-                rule.add(false);
+        for (int i = 0; i < column.get_values().size(); i++) {
+            if (column.get_type() == BigDecimal.class) {
+                rule.add(_bdEqual((BigDecimal) column.get_values().get(i), new BigDecimal(String.valueOf(value))));
+            } else {
+                if (column.get_values().get(i) == value) {
+                    rule.add(true);
+                } else {
+                    rule.add(false);
+                }
             }
         }
         return rule;
+
+    }
+
+    public static boolean _bdEqual(BigDecimal row_i, BigDecimal value){
+        if (row_i.compareTo(value) == 0){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public static Columns isTrue(Columns column, List<Boolean> rule){

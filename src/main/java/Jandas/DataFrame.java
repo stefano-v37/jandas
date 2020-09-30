@@ -50,7 +50,39 @@ public class DataFrame{
     }
 
 
-    // structure methods
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!
+    !! Structure methods !!
+    !!!!!!!!!!!!!!!!!!!!!!!
+     */
+    public void isTrue(List<Boolean> rule){
+        for (Map.Entry<String, Columns> entry : this.getData().entrySet()) {
+            String key = entry.getKey();
+            Columns col = entry.getValue();
+
+            this.getData().put(key,Utilities.isTrue(col,rule));
+        }
+        //TODO: do it for index after complete refactor to include index in columns
+        this.build();
+    }
+    public DataFrame isTrue(List<Boolean> rule, boolean inplace){
+        if (inplace){
+            this.isTrue(rule);
+        }
+        else{
+            Map<String, Columns> newMap = new HashMap<>();
+            for (Map.Entry<String, Columns> entry : this.getData().entrySet()) {
+                String key = entry.getKey();
+                Columns col = entry.getValue();
+
+                newMap.put(key,Utilities.isTrue(col,rule));
+            }
+            DataFrame newDf = new DataFrame(newMap);
+            return newDf;
+        }
+        return null;
+    }
+
     // TODO: understand how to compare Map<:,diff type>
     public void addDf(Map<String, Columns> col){
         this.data.putAll(col);
