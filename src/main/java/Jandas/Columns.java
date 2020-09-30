@@ -11,7 +11,7 @@ public class Columns {
 
     private String _name;
     private List _values;
-    static Object _type;
+    private Object _type;
     private Map<String, Object> _map = new HashMap<>();
 
     //constructor #0: only create the instance
@@ -98,6 +98,20 @@ public class Columns {
         }
         else {
             System.out.println("Please add data to the Column or initialize the type");
+        }
+    }
+
+    // struct methods
+    public void append(Columns col2){
+        if (this.get_type() == col2.get_type()){
+            this.put(col2.get_values());
+        }
+    }
+
+    public void append(List values){
+        Columns col2 = new Columns(values);
+        if (this.get_type() == col2.get_type()){
+            this.put(col2.get_values());
         }
     }
 
