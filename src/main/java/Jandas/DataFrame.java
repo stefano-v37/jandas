@@ -56,6 +56,16 @@ public class DataFrame{
         this.data.putAll(col);
     }
 
+    public void addColumn(Object item){
+        Columns newCol = new Columns(item, this.get_size());
+        addColumn(newCol);
+    }
+
+    public void addColumn(Object item, String name){
+        Columns newCol = new Columns(item, this.get_size(), name);
+        addColumn(newCol);
+    }
+
     public void addColumns(Map cols){
         Map <String, Columns> tempMap = new HashMap<>();
         if (cols.get(cols.keySet().toArray()[0]).getClass() == Jandas.Columns.class){
@@ -79,6 +89,7 @@ public class DataFrame{
             temp_name = "Column " + this.data.size();
         }
         this.data.put(temp_name, col);
+        this.calculateSize();
     }
 
     public void addColumns(Columns[] cols){

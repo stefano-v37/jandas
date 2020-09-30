@@ -61,6 +61,31 @@ public class Columns {
         build();
     }
 
+    // constructor #4: pass object and length
+    public Columns(Object value, int length){
+        List values = new ArrayList<>();
+        for (int i=0; i<length; i++){
+            values.add(value);
+        }
+        setValues(values);
+        setName();
+        setType();
+
+        build();
+    }
+
+    public Columns(Object value, int length, String name){
+        List values = new ArrayList<>();
+        for (int i=0; i<length; i++){
+            values.add(value);
+        }
+        setValues(values);
+        setName(name);
+        setType();
+
+        build();
+    }
+
     // name methods
     public void setName(){
         setName("Column");
