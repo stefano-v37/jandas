@@ -26,6 +26,19 @@ public class Utilities {
         return rule;
     }
 
+    public static List<Boolean> isEqual(Columns column, Object value){
+        List<Boolean> rule = new ArrayList<Boolean>();
+        for (int i = 0; i < column.get_values().size(); i++){
+            if (column.get_values().get(i) == value){
+                rule.add(true);
+            }
+            else{
+                rule.add(false);
+            }
+        }
+        return rule;
+    }
+
     public static Columns isTrue(Columns column, List<Boolean> rule){
         List<Object> newCol = new ArrayList<Object>();
         for (int i = 0; i < column.get_values().size(); i++) {
