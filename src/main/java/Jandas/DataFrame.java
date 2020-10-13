@@ -50,10 +50,52 @@ public class DataFrame{
     }
 
 
-    // structure methods
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!
+    !! Structure methods !!
+    !!!!!!!!!!!!!!!!!!!!!!!
+     */
+    public void isTrue(List<Boolean> rule){
+        for (Map.Entry<String, Columns> entry : this.getData().entrySet()) {
+            String key = entry.getKey();
+            Columns col = entry.getValue();
+
+            this.getData().put(key,Utilities.isTrue(col,rule));
+        }
+        //TODO: do it for index after complete refactor to include index in columns
+        this.build();
+    }
+    public DataFrame isTrue(List<Boolean> rule, boolean inplace){
+        if (inplace){
+            this.isTrue(rule);
+        }
+        else{
+            Map<String, Columns> newMap = new HashMap<>();
+            for (Map.Entry<String, Columns> entry : this.getData().entrySet()) {
+                String key = entry.getKey();
+                Columns col = entry.getValue();
+
+                newMap.put(key,Utilities.isTrue(col,rule));
+            }
+            DataFrame newDf = new DataFrame(newMap);
+            return newDf;
+        }
+        return null;
+    }
+
     // TODO: understand how to compare Map<:,diff type>
     public void addDf(Map<String, Columns> col){
         this.data.putAll(col);
+    }
+
+    public void addColumn(Object item){
+        Columns newCol = new Columns(item, this.get_size());
+        addColumn(newCol);
+    }
+
+    public void addColumn(Object item, String name){
+        Columns newCol = new Columns(item, this.get_size(), name);
+        addColumn(newCol);
     }
 
     public void addColumns(Map cols){
@@ -79,6 +121,7 @@ public class DataFrame{
             temp_name = "Column " + this.data.size();
         }
         this.data.put(temp_name, col);
+        this.calculateSize();
     }
 
     public void addColumns(Columns[] cols){
@@ -153,18 +196,28 @@ public class DataFrame{
     }
 
     public void toCsv(String path){
-        String csv = "SEP=,\n";
+        toCsv(path, ",");
+    }
+
+    public void toCsv(String path, String separator){
+        toCsv(path, separator, "");
+    }
+
+    public void toCsv(String path, String separator, String quote){
+        String sep = separator;
+        String qt = quote;
+        String csv = "SEP="+sep+"\n";
         for (int i=-1; i<this._size; i++) {
             for (Map.Entry<String, Columns> item : this.data.entrySet()){
                 if (i == -1){
-                    csv += item.getKey() + ", ";
+                    csv += qt + item.getKey() + qt + sep;
                 }
                 else{
-                    csv += item.getValue().get_values().get(i) + ", ";
+                    csv += qt + item.getValue().get_values().get(i) + qt + sep;
                 }
             }
             csv = csv.substring(0,csv.length()-2);
-            csv += "\n";
+            csv += qt +  "\n";
         }
 
         PrintWriter pw = null;
