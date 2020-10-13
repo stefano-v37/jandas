@@ -217,7 +217,7 @@ public class DataFrame{
                 }
             }
             csv = csv.substring(0,csv.length()-2);
-            csv += "\n";
+            csv += qt +  "\n";
         }
 
         PrintWriter pw = null;
