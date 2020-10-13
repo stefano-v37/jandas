@@ -196,14 +196,24 @@ public class DataFrame{
     }
 
     public void toCsv(String path){
-        String csv = "SEP=,\n";
+        toCsv(path, ",");
+    }
+
+    public void toCsv(String path, String separator){
+        toCsv(path, separator, "");
+    }
+
+    public void toCsv(String path, String separator, String quote){
+        String sep = separator;
+        String qt = quote;
+        String csv = "SEP="+sep+"\n";
         for (int i=-1; i<this._size; i++) {
             for (Map.Entry<String, Columns> item : this.data.entrySet()){
                 if (i == -1){
-                    csv += item.getKey() + ", ";
+                    csv += qt + item.getKey() + qt + sep;
                 }
                 else{
-                    csv += item.getValue().get_values().get(i) + ", ";
+                    csv += qt + item.getValue().get_values().get(i) + qt + sep;
                 }
             }
             csv = csv.substring(0,csv.length()-2);
