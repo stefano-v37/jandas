@@ -56,11 +56,20 @@ public class DataFrame{
 
     // TODO: consider builder pattern
     public static DataFrame fromCsv(String path) throws IOException {
+        String quotationMark = "";
+        String separator = ",";
+        return fromCsv(path, quotationMark, separator);
+    }
+
+    public static DataFrame fromCsv(String path, String separator) throws IOException {
+        String quotationMark = "";
+        return fromCsv(path, quotationMark, separator);
+    }
+
+    public static DataFrame fromCsv(String path, String separator, String quotationMark) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
 
-        String quotationMark = "\"";
         String qt = quotationMark;
-        String separator = ";";
         String sep = separator;
         String[] columns = null;
 
