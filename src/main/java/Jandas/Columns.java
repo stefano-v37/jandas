@@ -52,6 +52,15 @@ public class Columns {
         build();
     }
 
+    public <T> Columns(String name){
+        List<T> values = new ArrayList<T>();
+        setValues(values);
+        setType();
+        setName();
+
+        build();
+    }
+
     // constructor #3: full
     public <T> Columns(List values, T type, String name){
         setValues(values);
