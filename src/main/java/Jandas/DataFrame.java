@@ -1,11 +1,10 @@
 package Jandas;
 
+import jdk.jshell.execution.Util;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 
 
@@ -47,6 +46,62 @@ public class DataFrame{
         addColumns(cols);
         calculateSize();
         makeIndex();
+    }
+
+    /*
+    !!!!!!!!!!!!!!!!!!
+    !! Class method !!
+    !!!!!!!!!!!!!!!!!!
+     */
+
+    // TODO: consider builder pattern
+    public static DataFrame fromCsv(String path) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(path));
+
+        String quotationMark = "\"";
+        String qt = quotationMark;
+        String separator = ";";
+        String sep = separator;
+        String[] columns = null;
+
+        Map<String, Columns> dfData = new HashMap<>();
+
+        int rule = 0;
+        String line = "";
+        int i = 0;
+        while ((line = br.readLine()) != null) {
+            if (i <= 0+rule){
+                if (!line.substring(0,3).equals("SEP")){
+                    columns = Utilities.split(line, qt, sep);
+
+                    for (String col : columns){
+                        dfData.put(col, new Columns(String.class, col));
+                    }
+                }
+                else{
+                    rule = 1;
+                }
+            }
+            else{
+                String[] entries = Utilities.split(line, qt, sep);
+
+                int j = 0;
+                for (String entry : entries){
+                    dfData.get(columns[j]).put(entries[j]);
+                    j++;
+                }
+            }
+            i ++;
+        }
+
+        for (Map.Entry<String, Columns> entry : dfData.entrySet()) {
+            String key = entry.getKey();
+            Columns value = entry.getValue();
+
+            dfData.put(key, Utilities.recognizeColumnType(value));
+
+        }
+        return new DataFrame(dfData);
     }
 
 
