@@ -280,7 +280,7 @@ public class DataFrame{
                     csv += qt + item.getValue().get_values().get(i) + qt + sep;
                 }
             }
-            csv = csv.substring(0,csv.length()-2);
+            csv = csv.substring(0,csv.length()-1);
             csv += qt +  "\n";
         }
 
